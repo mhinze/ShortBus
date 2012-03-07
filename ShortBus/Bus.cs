@@ -68,21 +68,19 @@ namespace ShortBus
             {
                 // this is plain strong-typed reflection, just need the name in a rename-friendly way
                 Expression<Action<IQueryHandler<IQuery<TResponseData>, TResponseData>>> method = x => x.Handle(null);
-                handleMethod = ((MethodCallExpression)method.Body).Method.Name;
+                handleMethod = ((MethodCallExpression) method.Body).Method.Name;
             }
 
-            var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResponseData));
-            var convert = Expression.Convert(Expression.Constant(handler), handlerType);
-
-            var methodCallExpression = Expression.Call(convert, handleMethod, null, new Expression[] { Expression.Constant(query) });
-            var function = Expression.Lambda<Func<object>>(methodCallExpression).Compile();
+            var methodCallExpression = Expression.Call(Expression.Constant(handler), handleMethod, null,
+                                                       new Expression[] { Expression.Constant(query) });
+            var function = Expression.Lambda<Func<TResponseData>>(methodCallExpression).Compile();
             var result = function();
-            return (TResponseData)result;
+            return result;
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)
         {
-            var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResponseData));
+            var handlerType = typeof (IQueryHandler<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
             var handler = _container.TryGetInstance(handlerType);
             return handler;
         }

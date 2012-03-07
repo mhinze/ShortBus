@@ -21,7 +21,7 @@ namespace ShortBus.Tests.Example
         [Test]
         public void RequestResponse()
         {
-            var ping = new PingMessage();
+            var ping = new Ping();
 
             var bus = ObjectFactory.GetInstance<IBus>();
 

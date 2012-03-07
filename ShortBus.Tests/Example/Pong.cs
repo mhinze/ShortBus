@@ -1,8 +1,8 @@
 ﻿namespace ShortBus.Tests.Example
 {
-    public class Pong : IQueryHandler<PingMessage, string>
+    public class Pong : IQueryHandler<Ping, string>
     {
-        public string Handle(PingMessage request)
+        public string Handle(Ping request)
         {
             return "PONG!";
         }

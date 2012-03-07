@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="Example\BasicExample.cs" />
     <Compile Include="Example\ConsoleWriter.cs" />
-    <Compile Include="Example\PingMessage.cs" />
+    <Compile Include="Example\Ping.cs" />
     <Compile Include="Example\Pong.cs" />
     <Compile Include="Example\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using StructureMap;
 
 namespace ShortBus
@@ -37,6 +38,7 @@ namespace ShortBus
             var allInstances = _container.GetAllInstances<ICommandHandler<TMessage>>();
 
             var response = new Response();
+            List<Exception> exceptions = null;
             foreach (var handler in allInstances)
                 try
                 {
@@ -44,11 +46,10 @@ namespace ShortBus
                 }
                 catch (Exception e)
                 {
-                    // TODO This should handle continuing after exception
-                    response.Exception = e;
-                    break;
+                    (exceptions ?? (exceptions = new List<Exception>())).Add(e);
                 }
-
+            if (exceptions != null) 
+                response.Exception = new AggregateException(exceptions);
             return response;
         }
 

@@ -7,6 +7,7 @@ namespace ShortBus
 {
     public class Bus : IBus
     {
+        static string handleMethod;
         readonly IContainer _container;
 
         public Bus(IContainer container)
@@ -24,7 +25,7 @@ namespace ShortBus
 
             try
             {
-                response.Data = GetResponseData(query, handler);
+                response.Data = ProcessQueryWithHandler(query, handler);
             }
             catch (Exception e)
             {
@@ -56,47 +57,34 @@ namespace ShortBus
 
         static void AssertHandlerNotNull<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            if (handler == null)
-                throw new InvalidOperationException(string.Format("handler not found for message of type {0}",
-                                                                  query.GetType().Name));
+            if (handler != null) return;
+            var message = string.Format("handler not found for message of type {0}", query.GetType().Name);
+            throw new InvalidOperationException(message);
         }
 
-        TResponseData GetResponseData<TResponseData>(IQuery<TResponseData> query, object handler)
+        TResponseData ProcessQueryWithHandler<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            var helper = InstantiateHelper(query);
-            var responseData = (TResponseData) helper.ExecuteHandler(handler, query);
-            return responseData;
-        }
+            if (handleMethod == null)
+            {
+                // this is plain strong-typed reflection, just need the name in a rename-friendly way
+                Expression<Action<IQueryHandler<IQuery<TResponseData>, TResponseData>>> method = x => x.Handle(null);
+                handleMethod = ((MethodCallExpression)method.Body).Method.Name;
+            }
 
-        IHelper InstantiateHelper<TResponseData>(IQuery<TResponseData> query)
-        {
-            var helperType = typeof (Helper<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
-            var ctor = helperType.GetConstructors()[0];
-            var newExpression = Expression.New(ctor);
-            var makeHandler = (MakeHandler) Expression.Lambda(typeof (MakeHandler), newExpression).Compile();
-            return ((IHelper) makeHandler());
+            var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResponseData));
+            var convert = Expression.Convert(Expression.Constant(handler), handlerType);
+
+            var methodCallExpression = Expression.Call(convert, handleMethod, null, new Expression[] { Expression.Constant(query) });
+            var function = Expression.Lambda<Func<object>>(methodCallExpression).Compile();
+            var result = function();
+            return (TResponseData)result;
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)
         {
-            var handlerType = typeof (IQueryHandler<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
+            var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResponseData));
             var handler = _container.TryGetInstance(handlerType);
             return handler;
         }
-
-        class Helper<TRequest, TResponse> : IHelper where TRequest : IQuery<TResponse>
-        {
-            public object ExecuteHandler(object handler, object query)
-            {
-                return ((IQueryHandler<TRequest, TResponse>) handler).Handle((TRequest) query);
-            }
-        }
-
-        interface IHelper
-        {
-            object ExecuteHandler(object handler, object query);
-        }
-
-        delegate object MakeHandler();
     }
 }

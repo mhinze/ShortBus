@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Diagnostics;
+using NUnit.Framework;
 using StructureMap;
 
 namespace ShortBus.Tests.Example
@@ -45,6 +47,20 @@ namespace ShortBus.Tests.Example
             var response = bus.Send(message);
 
             Assert.That(response.HasException(), Is.False);
+        }
+
+        [Test, Explicit]
+        public void Perf()
+        {
+            var bus = ObjectFactory.GetInstance<IBus>();
+            var message = new Ping();
+
+            var watch = Stopwatch.StartNew();
+
+            for (int i = 0; i < 10000000; i++)
+                bus.Send(message);
+
+            Console.WriteLine(watch.Elapsed);
         }
     }
 }

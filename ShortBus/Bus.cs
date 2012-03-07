@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using StructureMap;
 
 namespace ShortBus
@@ -48,7 +49,7 @@ namespace ShortBus
                 {
                     (exceptions ?? (exceptions = new List<Exception>())).Add(e);
                 }
-            if (exceptions != null) 
+            if (exceptions != null)
                 response.Exception = new AggregateException(exceptions);
             return response;
         }
@@ -60,12 +61,20 @@ namespace ShortBus
                                                                   query.GetType().Name));
         }
 
-        static TResponseData GetResponseData<TResponseData>(IQuery<TResponseData> query, object handler)
+        TResponseData GetResponseData<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            var helperType = typeof (Helper<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
-            var helper = ((IHelper) Activator.CreateInstance(helperType));
+            var helper = InstantiateHelper(query);
             var responseData = (TResponseData) helper.ExecuteHandler(handler, query);
             return responseData;
+        }
+
+        IHelper InstantiateHelper<TResponseData>(IQuery<TResponseData> query)
+        {
+            var helperType = typeof (Helper<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
+            var ctor = helperType.GetConstructors()[0];
+            var newExpression = Expression.New(ctor);
+            var makeHandler = (MakeHandler) Expression.Lambda(typeof (MakeHandler), newExpression).Compile();
+            return ((IHelper) makeHandler());
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)
@@ -87,5 +96,7 @@ namespace ShortBus
         {
             object ExecuteHandler(object handler, object query);
         }
+
+        delegate object MakeHandler();
     }
 }

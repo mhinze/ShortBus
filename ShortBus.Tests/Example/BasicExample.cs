@@ -13,8 +13,8 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IBus>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.ConnectImplementationsToTypesClosing((typeof (IHandler<,>)));
-                    s.AddAllTypesOf(typeof (IHandler<>));
+                    s.ConnectImplementationsToTypesClosing((typeof (IQueryHandler<,>)));
+                    s.AddAllTypesOf(typeof (ICommandHandler<>));
                 }));
         }
 

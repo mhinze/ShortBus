@@ -2,7 +2,7 @@
 
 namespace ShortBus.Tests.Example
 {
-    public class ConsoleWriter : IHandler<TextMessage>
+    public class ConsoleWriter : ICommandHandler<TextMessage>
     {
         public void Handle(TextMessage message)
         {

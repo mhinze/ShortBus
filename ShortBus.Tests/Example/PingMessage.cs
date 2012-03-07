@@ -1,4 +1,4 @@
 ﻿namespace ShortBus.Tests.Example
 {
-    public class PingMessage : IRequest<string> {}
+    public class PingMessage : IQuery<string> {}
 }

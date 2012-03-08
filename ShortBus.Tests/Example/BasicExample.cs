@@ -57,8 +57,8 @@ namespace ShortBus.Tests.Example
 
             var watch = Stopwatch.StartNew();
 
-            for (int i = 0; i < 10000000; i++)
-                bus.Send(message);
+            for (int i = 0; i < 10000; i++)
+                bus.Request(message);
 
             Console.WriteLine(watch.Elapsed);
         }

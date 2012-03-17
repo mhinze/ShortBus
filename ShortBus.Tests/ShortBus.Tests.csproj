@@ -63,6 +63,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\ShortBus.Markers\ShortBus.Markers.csproj">
+      <Project>{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}</Project>
+      <Name>ShortBus.Markers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ShortBus\ShortBus.csproj">
       <Project>{50078B66-DBAC-4273-8DD0-970176B2FE2B}</Project>
       <Name>ShortBus</Name>

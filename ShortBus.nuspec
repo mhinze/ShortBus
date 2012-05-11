@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <version>1.0.0</version>
+    <authors>Matt Hinze</authors>    
+    <owners>mhinze</owners>
+    <licenseUrl>https://github.com/mhinze/ShortBus/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/mhinze/ShortBus</projectUrl>
+    <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.jpg</iconUrl>
+    <id>ShortBus</id>
+    <title>ShortBus</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ShortBus is a synchronous mediator with low-friction API</description>
+    <summary>ShortBus is a synchronous mediator with low-friction API</summary>
+    <copyright>Copyright Matt Hinze 2012</copyright>
+    <dependencies>
+        <dependency id="ShortBus.Markers" version="2.0.0" />
+        <dependency id="StructureMap" version="2.6.3" />
+    </dependencies>
+  </metadata>
+    <files>
+        <file src="ShortBus\bin\Release\ShortBus.dll" target="lib"/>
+    </files>
+</package>

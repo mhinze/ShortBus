@@ -10,7 +10,7 @@ ShortBus is a synchronous mediator with low-friction API
 		}
 	}
 
-    _bus.Send(new DoSomething());
+    _mediator.Send(new DoSomething());
 
 
 
@@ -23,7 +23,7 @@ ShortBus is a synchronous mediator with low-friction API
 		}
 	}
 
-	var answer = _bus.Request(new AskAQuestion());
+	var answer = _mediator.Request(new AskAQuestion());
 	
 ### StructureMap
 ShortBus depends on StructureMap and it requires that you register 
@@ -31,7 +31,7 @@ handlers:
 
     ObjectFactory.Initialize(i => i.Scan(s =>
     {
-        s.AssemblyContainingType<IBus>();
+        s.AssemblyContainingType<IMediator>();
         s.TheCallingAssembly();
         s.WithDefaultConventions();
         s.ConnectImplementationsToTypesClosing((typeof (IQueryHandler<,>)));
@@ -49,7 +49,3 @@ No type parameter noise.
 * Query objects
 * Enables subcutaneous testing
 * Business concepts as first class citizens
-
-    
-
-

@@ -41,8 +41,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bus.cs" />
-    <Compile Include="IBus.cs" />
+    <Compile Include="Mediator.cs" />
+    <Compile Include="IMediator.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="IQueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

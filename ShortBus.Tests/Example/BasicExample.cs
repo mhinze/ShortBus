@@ -12,7 +12,7 @@ namespace ShortBus.Tests.Example
         {
             ObjectFactory.Initialize(i => i.Scan(s =>
                 {
-                    s.AssemblyContainingType<IBus>();
+                    s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
                     s.ConnectImplementationsToTypesClosing((typeof (IQueryHandler<,>)));
@@ -23,11 +23,11 @@ namespace ShortBus.Tests.Example
         [Test]
         public void RequestResponse()
         {
-            var ping = new Ping();
+            var query = new Ping();
 
-            var bus = ObjectFactory.GetInstance<IBus>();
+            var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var pong = bus.Request(ping);
+            var pong = mediator.Request(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG!"));
             Assert.That(pong.HasException(), Is.False);
@@ -36,15 +36,15 @@ namespace ShortBus.Tests.Example
         [Test]
         public void Send()
         {
-            var message = new TextMessage
+            var command = new PrintText
                 {
                     Format = "This is a {0} message",
                     Args = new object[] {"text"}
                 };
 
-            var bus = ObjectFactory.GetInstance<IBus>();
+            var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var response = bus.Send(message);
+            var response = mediator.Send(command);
 
             Assert.That(response.HasException(), Is.False);
         }
@@ -52,13 +52,15 @@ namespace ShortBus.Tests.Example
         [Test, Explicit]
         public void Perf()
         {
-            var bus = ObjectFactory.GetInstance<IBus>();
-            var message = new Ping();
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var query = new Ping();
 
             var watch = Stopwatch.StartNew();
 
             for (int i = 0; i < 10000; i++)
-                bus.Request(message);
+                mediator.Request(query);
+
+            watch.Stop();
 
             Console.WriteLine(watch.Elapsed);
         }

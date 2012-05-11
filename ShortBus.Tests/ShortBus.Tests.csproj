@@ -55,7 +55,7 @@
     <Compile Include="Example\ConsoleWriter.cs" />
     <Compile Include="Example\Ping.cs" />
     <Compile Include="Example\Pong.cs" />
-    <Compile Include="Example\TextMessage.cs" />
+    <Compile Include="Example\PrintText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

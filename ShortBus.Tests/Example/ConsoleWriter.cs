@@ -2,9 +2,9 @@
 
 namespace ShortBus.Tests.Example
 {
-    public class ConsoleWriter : ICommandHandler<TextMessage>
+    public class ConsoleWriter : ICommandHandler<PrintText>
     {
-        public void Handle(TextMessage message)
+        public void Handle(PrintText message)
         {
             Console.WriteLine(message.Format, message.Args);
         }

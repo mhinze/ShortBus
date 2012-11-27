@@ -49,3 +49,6 @@ No type parameter noise.
 * Query objects
 * Enables subcutaneous testing
 * Business concepts as first class citizens
+
+### In Production
+ShortBus is in production powering the server API for a major ecommerce mobile application.

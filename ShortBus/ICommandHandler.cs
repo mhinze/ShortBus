@@ -1,6 +1,6 @@
 namespace ShortBus
 {
-    public interface ICommandHandler<TMessage>
+    public interface ICommandHandler<in TMessage>
     {
         void Handle(TMessage message);
     }

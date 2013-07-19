@@ -2,7 +2,18 @@ namespace ShortBus.Tests.Example
 {
     public class PrintText
     {
-        public string Format { get; set; }
-        public object[] Args { get; set; }
+        public virtual string Format { get; set; }
+        public virtual object[] Args { get; set; }
+    }
+
+    public class PrintTextSpecial : PrintText
+    {
+        private string _format;
+
+        public override string Format
+        {
+            get { return _format + " is special"; }
+            set { _format = value; }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.ConnectImplementationsToTypesClosing((typeof (IQueryHandler<,>)));
+                    s.AddAllTypesOf((typeof (IQueryHandler<,>)));
                     s.AddAllTypesOf(typeof (ICommandHandler<>));
                 }));
         }
@@ -34,9 +34,38 @@ namespace ShortBus.Tests.Example
         }
 
         [Test]
+        public void RequestResponse_variant()
+        {
+            var query = new PingALing();
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var pong = mediator.Request(query);
+
+            Assert.That(pong.Data, Is.EqualTo("PONG!"));
+            Assert.That(pong.HasException(), Is.False);
+        }
+
+        [Test]
         public void Send()
         {
             var command = new PrintText
+                {
+                    Format = "This is a {0} message",
+                    Args = new object[] {"text"}
+                };
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var response = mediator.Send(command);
+
+            Assert.That(response.HasException(), Is.False);
+        }
+
+        [Test]
+        public void Send_variant()
+        {
+            var command = new PrintTextSpecial
                 {
                     Format = "This is a {0} message",
                     Args = new object[] {"text"}

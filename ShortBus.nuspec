@@ -14,7 +14,7 @@
     <summary>ShortBus is a synchronous mediator with low-friction API</summary>
     <copyright>Copyright Matt Hinze 2012</copyright>
     <dependencies>
-        <dependency id="ShortBus.Markers" version="2.0.0" />
+        <dependency id="ShortBus.Markers" version="2.1" />
         <dependency id="StructureMap" version="2.6.3" />
     </dependencies>
   </metadata>

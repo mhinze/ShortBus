@@ -18,7 +18,7 @@ ShortBus is a synchronous mediator with low-friction API
     public class AskAQuestion : IQuery<Answer> { }
 
 	public class Answerer : IQueryHandler<AskAQuestion, Answer> {
-	    public void Handle(AskAQuestion query) {			
+	    public Answer Handle(AskAQuestion query) {			
 			return answer;
 		}
 	}
@@ -34,7 +34,7 @@ handlers:
         s.AssemblyContainingType<IMediator>();
         s.TheCallingAssembly();
         s.WithDefaultConventions();
-        s.ConnectImplementationsToTypesClosing((typeof (IQueryHandler<,>)));
+        s.AddAllTypesOf(typeof (IQueryHandler<,>));
         s.AddAllTypesOf(typeof (ICommandHandler<>));
     }));	
 

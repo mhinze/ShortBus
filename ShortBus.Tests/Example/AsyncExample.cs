@@ -6,9 +6,11 @@ using StructureMap;
 
 namespace ShortBus.Tests.Example
 {
+    [TestFixture]
     public class AsyncExample
     {
-        public AsyncExample()
+        [Test]
+        public void RequestResponse()
         {
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
@@ -17,11 +19,8 @@ namespace ShortBus.Tests.Example
                 s.WithDefaultConventions();
                 s.AddAllTypesOf((typeof(IAsyncQueryHandler<,>)));
             }));
-        }
 
-        [Test]
-        public void RequestResponse()
-        {
+
             var query = new ExternalResourceQuery();
 
             var mediator = ObjectFactory.GetInstance<IMediator>();

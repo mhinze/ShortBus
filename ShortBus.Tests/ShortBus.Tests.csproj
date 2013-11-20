@@ -54,6 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Example\AsyncExample.cs" />
     <Compile Include="Example\BasicExample.cs" />
     <Compile Include="Example\ConsoleWriter.cs" />
     <Compile Include="Example\Ping.cs" />

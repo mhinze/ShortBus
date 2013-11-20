@@ -1,0 +1,50 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using StructureMap;
+
+namespace ShortBus.Tests.Example
+{
+    public class AsyncExample
+    {
+        public AsyncExample()
+        {
+            ObjectFactory.Initialize(i => i.Scan(s =>
+            {
+                s.AssemblyContainingType<IMediator>();
+                s.TheCallingAssembly();
+                s.WithDefaultConventions();
+                s.AddAllTypesOf((typeof(IAsyncQueryHandler<,>)));
+            }));
+        }
+
+        [Test]
+        public void RequestResponse()
+        {
+            var query = new ExternalResourceQuery();
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var task = mediator.RequestAsync(query);
+
+            Assert.That(task.Result.Data, Is.EqualTo("success"));
+            Assert.That(task.Result.HasException(), Is.False);
+        }
+    }
+
+    public class ExternalResourceQuery : IQuery<string>
+    { }
+
+    public class ExternalResourceHandler : IAsyncQueryHandler<ExternalResourceQuery, string>
+    {
+        public Task<string> Handle(ExternalResourceQuery request)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+                return "success";
+            });
+        }
+    }
+}

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using StructureMap;
-
-namespace ShortBus.Tests.Example
+﻿namespace ShortBus.Tests.Example
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using NUnit.Framework;
+    using StructureMap;
+
     [TestFixture]
     public class AsyncExample
     {
@@ -17,9 +17,8 @@ namespace ShortBus.Tests.Example
                 s.AssemblyContainingType<IMediator>();
                 s.TheCallingAssembly();
                 s.WithDefaultConventions();
-                s.AddAllTypesOf((typeof(IAsyncQueryHandler<,>)));
+                s.AddAllTypesOf(( typeof (IAsyncQueryHandler<,>) ));
             }));
-
 
             var query = new ExternalResourceQuery();
 
@@ -32,12 +31,11 @@ namespace ShortBus.Tests.Example
         }
     }
 
-    public class ExternalResourceQuery : IQuery<string>
-    { }
+    public class ExternalResourceQuery : IAsyncQuery<string> {}
 
     public class ExternalResourceHandler : IAsyncQueryHandler<ExternalResourceQuery, string>
     {
-        public Task<string> Handle(ExternalResourceQuery request)
+        public Task<string> HandleAsync(ExternalResourceQuery request)
         {
             return Task.Factory.StartNew(() =>
             {

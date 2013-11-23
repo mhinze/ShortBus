@@ -33,7 +33,7 @@ namespace ShortBus
             return response;
         }
 
-        public async Task<Response<TResponseData>> RequestAsync<TResponseData>(IQuery<TResponseData> query)
+        public async Task<Response<TResponseData>> RequestAsync<TResponseData>(IAsyncQuery<TResponseData> query)
         {
             var response = new Response<TResponseData>();
 
@@ -95,7 +95,7 @@ namespace ShortBus
         {
             try
             {
-                await asyncCommandHandler.Handle(message);
+                await asyncCommandHandler.HandleAsync(message);
             }
             catch (Exception e)
             {
@@ -110,9 +110,9 @@ namespace ShortBus
             return (TResponseData) handler.GetType().GetMethod("Handle").Invoke(handler, new object[] { query });
         }
 
-        static Task<TResponseData> ProcessQueryWithHandlerAsync<TResponseData>(IQuery<TResponseData> query, object handler)
+        static Task<TResponseData> ProcessQueryWithHandlerAsync<TResponseData>(IAsyncQuery<TResponseData> query, object handler)
         {
-            return (Task<TResponseData>) handler.GetType().GetMethod("Handle").Invoke(handler, new object[] { query });
+            return (Task<TResponseData>) handler.GetType().GetMethod("HandleAsync").Invoke(handler, new object[] { query });
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)
@@ -122,7 +122,7 @@ namespace ShortBus
             return handler;
         }
 
-        object GetAsyncHandler<TResponseData>(IQuery<TResponseData> query)
+        object GetAsyncHandler<TResponseData>(IAsyncQuery<TResponseData> query)
         {
             var handlerType = typeof (IAsyncQueryHandler<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
             var handler = _container.GetInstance(handlerType);

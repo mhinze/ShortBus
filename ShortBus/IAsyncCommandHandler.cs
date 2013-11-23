@@ -4,6 +4,6 @@ namespace ShortBus
 
     public interface IAsyncCommandHandler<in TMessage>
     {
-        Task Handle(TMessage message);
+        Task HandleAsync(TMessage message);
     }
 }

@@ -107,12 +107,18 @@ namespace ShortBus
 
         static TResponseData ProcessQueryWithHandler<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            return (TResponseData) handler.GetType().GetMethod("Handle").Invoke(handler, new object[] { query });
+            return (TResponseData) handler
+                .GetType()
+                .GetMethod("Handle", new Type[] {query.GetType()})
+                .Invoke(handler, new object[] {query});
         }
 
         static Task<TResponseData> ProcessQueryWithHandlerAsync<TResponseData>(IAsyncQuery<TResponseData> query, object handler)
         {
-            return (Task<TResponseData>) handler.GetType().GetMethod("HandleAsync").Invoke(handler, new object[] { query });
+            return (Task<TResponseData>) handler
+                .GetType()
+                .GetMethod("HandleAsync", new Type[] {query.GetType()})
+                .Invoke(handler, new object[] {query});
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)

@@ -34,6 +34,19 @@ namespace ShortBus.Tests.Example
         }
 
         [Test]
+        public void RequestResponseImplementationWithMultipleHandler()
+        {
+            var query = new TriplePing();
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var pong = mediator.Request(query);
+
+            Assert.That(pong.Data, Is.EqualTo("PONG! PONG! PONG!"));
+            Assert.That(pong.HasException(), Is.False);
+        }
+
+        [Test]
         public void RequestResponse_variant()
         {
             var query = new PingALing();
@@ -43,6 +56,19 @@ namespace ShortBus.Tests.Example
             var pong = mediator.Request(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG!"));
+            Assert.That(pong.HasException(), Is.False);
+        }
+
+        [Test]
+        public void RequestResponseImplementationWithMultipleHandler_variant()
+        {
+            var query = new DoublePingALing();
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var pong = mediator.Request(query);
+
+            Assert.That(pong.Data, Is.EqualTo("PONG! PONG!"));
             Assert.That(pong.HasException(), Is.False);
         }
 

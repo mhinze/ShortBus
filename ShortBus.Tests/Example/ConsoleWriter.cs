@@ -2,9 +2,14 @@
 
 namespace ShortBus.Tests.Example
 {
-    public class ConsoleWriter : ICommandHandler<PrintText>
+    public class OverloadedConsoleWriter : ICommandHandler<PrintTextA>, ICommandHandler<PrintTextB>
     {
-        public void Handle(PrintText message)
+        public void Handle(PrintTextA message)
+        {
+            Console.WriteLine(message.Format, message.Args);
+        }
+
+        public void Handle(PrintTextB message)
         {
             Console.WriteLine(message.Format, message.Args);
         }

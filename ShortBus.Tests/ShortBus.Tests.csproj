@@ -57,6 +57,8 @@
     <Compile Include="Example\AsyncExample.cs" />
     <Compile Include="Example\BasicExample.cs" />
     <Compile Include="Example\ConsoleWriter.cs" />
+    <Compile Include="Example\OverloadedConsoleWriter.cs" />
+    <Compile Include="Example\OverloadExample.cs" />
     <Compile Include="Example\Ping.cs" />
     <Compile Include="Example\Pong.cs" />
     <Compile Include="Example\PrintText.cs" />

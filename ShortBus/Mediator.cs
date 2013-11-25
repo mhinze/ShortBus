@@ -107,12 +107,33 @@ namespace ShortBus
 
         static TResponseData ProcessQueryWithHandler<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            return (TResponseData) handler.GetType().GetMethod("Handle").Invoke(handler, new object[] { query });
+            var method = (from m in handler.GetType().GetMethods()
+                          let parameters = m.GetParameters()
+                          let returnType = m.ReturnType
+                          where m.Name == "Handle" &&
+                                parameters.Length == 1 &&
+                                parameters[0].ParameterType.IsInstanceOfType(query) &&
+                                returnType == typeof (TResponseData)
+                          select m).First();
+
+
+            return (TResponseData) method.Invoke(handler, new object[] {query});
         }
 
         static Task<TResponseData> ProcessQueryWithHandlerAsync<TResponseData>(IAsyncQuery<TResponseData> query, object handler)
         {
-            return (Task<TResponseData>) handler.GetType().GetMethod("HandleAsync").Invoke(handler, new object[] { query });
+            var taskReturnType = typeof (Task<>).MakeGenericType(typeof (TResponseData));
+
+            var method = (from m in handler.GetType().GetMethods()
+                          let parameters = m.GetParameters()
+                          let returnType = m.ReturnType
+                          where m.Name == "HandleAsync" &&
+                                parameters.Length == 1 &&
+                                parameters[0].ParameterType.IsInstanceOfType(query) &&
+                                returnType == taskReturnType
+                          select m).First();
+
+            return (Task<TResponseData>) method.Invoke(handler, new object[] { query });
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)

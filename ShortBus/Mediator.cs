@@ -3,11 +3,15 @@ namespace ShortBus
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
     using StructureMap;
 
     public class Mediator : IMediator
     {
+        private static readonly IDictionary<Type, MethodInfo> _methodInfoCache = new Dictionary<Type, MethodInfo>();
+        private static readonly IDictionary<Type, MethodInfo> _methodInfoAsyncCache = new Dictionary<Type, MethodInfo>(); 
+
         readonly IContainer _container;
 
         public Mediator(IContainer container)
@@ -107,12 +111,44 @@ namespace ShortBus
 
         static TResponseData ProcessQueryWithHandler<TResponseData>(IQuery<TResponseData> query, object handler)
         {
-            return (TResponseData) handler.GetType().GetMethod("Handle").Invoke(handler, new object[] { query });
+            Type queryType = query.GetType();
+            if (!_methodInfoCache.ContainsKey(queryType))
+            {
+                var method = (from m in handler.GetType().GetMethods()
+                              let parameters = m.GetParameters()
+                              let returnType = m.ReturnType
+                              where m.Name == "Handle" &&
+                                    parameters.Length == 1 &&
+                                    parameters[0].ParameterType.IsInstanceOfType(query) &&
+                                    returnType == typeof(TResponseData)
+                              select m).First();
+
+                _methodInfoCache.Add(queryType, method);
+            }
+
+            return (TResponseData)_methodInfoCache[queryType].Invoke(handler, new object[] { query });
         }
 
         static Task<TResponseData> ProcessQueryWithHandlerAsync<TResponseData>(IAsyncQuery<TResponseData> query, object handler)
         {
-            return (Task<TResponseData>) handler.GetType().GetMethod("HandleAsync").Invoke(handler, new object[] { query });
+            Type queryType = query.GetType();
+            if (!_methodInfoAsyncCache.ContainsKey(queryType))
+            {
+                var taskReturnType = typeof (Task<>).MakeGenericType(typeof (TResponseData));
+
+                var method = (from m in handler.GetType().GetMethods()
+                              let parameters = m.GetParameters()
+                              let returnType = m.ReturnType
+                              where m.Name == "HandleAsync" &&
+                                    parameters.Length == 1 &&
+                                    parameters[0].ParameterType.IsInstanceOfType(query) &&
+                                    returnType == taskReturnType
+                              select m).First();
+
+                _methodInfoAsyncCache.Add(queryType, method);
+            }
+
+            return (Task<TResponseData>)_methodInfoAsyncCache[queryType].Invoke(handler, new object[] { query });
         }
 
         object GetHandler<TResponseData>(IQuery<TResponseData> query)

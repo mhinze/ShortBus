@@ -16,4 +16,16 @@ namespace ShortBus.Tests.Example
             set { _format = value; }
         }
     }
+
+    public class PrintTextA
+    {
+        public virtual string Format { get; set; }
+        public virtual object[] Args { get; set; }
+    }
+
+    public class PrintTextB
+    {
+        public virtual string Format { get; set; }
+        public virtual object[] Args { get; set; }
+    }
 }

@@ -1,5 +1,5 @@
 ## ShortBus
-ShortBus is a synchronous mediator with low-friction API
+ShortBus is an in-process mediator with low-friction API
 
 ### Command
     public class DoSomething : ICommand { }
@@ -38,9 +38,6 @@ handlers:
         s.AddAllTypesOf(typeof (ICommandHandler<>));
     }));	
 
-### Synchronous
-ShortBus is synchronous.
-
 ### Low-friction API
 No type parameter noise.
 
@@ -51,4 +48,4 @@ No type parameter noise.
 * Business concepts as first class citizens
 
 ### In Production
-ShortBus is in production powering the server API for a major ecommerce mobile application.
+ShortBus is in production powering the server APIs for major ecommerce applications.

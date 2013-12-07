@@ -5,17 +5,9 @@ namespace ShortBus
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-    using StructureMap;
 
     public class Mediator : IMediator
     {
-        readonly IContainer _container;
-
-        public Mediator(IContainer container)
-        {
-            _container = container;
-        }
-
         public virtual Response<TResponseData> Request<TResponseData>(IQuery<TResponseData> query)
         {
             var response = new Response<TResponseData>();
@@ -54,7 +46,7 @@ namespace ShortBus
 
         public virtual Response Send<TMessage>(TMessage message)
         {
-            var allInstances = _container.GetAllInstances<ICommandHandler<TMessage>>();
+            var allInstances = DependencyResolver.Current.GetInstances<ICommandHandler<TMessage>>();
 
             var response = new Response();
             List<Exception> exceptions = null;
@@ -74,7 +66,7 @@ namespace ShortBus
 
         public async Task<Response> SendAsync<TMessage>(TMessage message)
         {
-            var handlers = _container.GetAllInstances<IAsyncCommandHandler<TMessage>>();
+            var handlers = DependencyResolver.Current.GetInstances<IAsyncCommandHandler<TMessage>>();
 
             return await Task
                 .WhenAll(handlers.Select(x => sendAsync(x, message)))
@@ -129,14 +121,14 @@ namespace ShortBus
         object GetHandler<TResponseData>(IQuery<TResponseData> query)
         {
             var handlerType = typeof (IQueryHandler<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
-            var handler = _container.GetInstance(handlerType);
+            var handler = DependencyResolver.Current.GetInstance(handlerType);
             return handler;
         }
 
         object GetAsyncHandler<TResponseData>(IAsyncQuery<TResponseData> query)
         {
             var handlerType = typeof (IAsyncQueryHandler<,>).MakeGenericType(query.GetType(), typeof (TResponseData));
-            var handler = _container.GetInstance(handlerType);
+            var handler = DependencyResolver.Current.GetInstance(handlerType);
             return handler;
         }
     }

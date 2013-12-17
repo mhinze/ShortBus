@@ -111,7 +111,7 @@ namespace ShortBus.Tests.Containers
             var container = new WindsorContainer();
             var registerSingle = new RegisterSingle();
             var multipleRegistrations = new[] { new RegisterMultiple(), new RegisterMultiple() };
-            //unity requires a name when registering multiple instances of the same type or nothing will be resolved.
+            //windsor requires a name when registering multiple instances of the same type or nothing will be resolved.
             container.Register(Component.For<RegisterSingle>().Instance(registerSingle));
             container.Register(Component.For<RegisterMultiple>().Instance(multipleRegistrations[0]).Named("instance1"));
             container.Register(Component.For<RegisterMultiple>().Instance(multipleRegistrations[1]).Named("instance2"));

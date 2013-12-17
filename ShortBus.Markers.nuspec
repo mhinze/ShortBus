@@ -6,7 +6,7 @@
     <owners>mhinze</owners>
     <licenseUrl>https://github.com/mhinze/ShortBus/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/mhinze/ShortBus</projectUrl>
-    <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.jpg</iconUrl>
+    <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.png</iconUrl>
     <id>ShortBus.Markers</id>
     <title>ShortBus Markers</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

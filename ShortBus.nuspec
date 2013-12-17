@@ -6,7 +6,7 @@
     <owners>mhinze</owners>
     <licenseUrl>https://github.com/mhinze/ShortBus/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/mhinze/ShortBus</projectUrl>
-    <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.jpg</iconUrl>
+    <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.png</iconUrl>
     <id>ShortBus</id>
     <title>ShortBus</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,7 +14,7 @@
     <summary>ShortBus is an in-process mediator with low-friction API</summary>
     <copyright>Copyright Matt Hinze 2013</copyright>
     <dependencies>
-        <dependency id="ShortBus.Markers" version="2.2.39" />
+        <dependency id="ShortBus.Markers" version="3.0.0" />
     </dependencies>
   </metadata>
     <files>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using NUnit.Framework;
+using ShortBus.StructureMap;
 using StructureMap;
 
 namespace ShortBus.Tests.Example
@@ -18,6 +19,8 @@ namespace ShortBus.Tests.Example
                     s.AddAllTypesOf((typeof (IQueryHandler<,>)));
                     s.AddAllTypesOf(typeof (ICommandHandler<>));
                 }));
+
+            ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
         }
 
         [Test]

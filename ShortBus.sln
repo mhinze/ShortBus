@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus", "ShortBus\ShortBus.csproj", "{50078B66-DBAC-4273-8DD0-970176B2FE2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Tests", "ShortBus.Tests\ShortBus.Tests.csproj", "{9EA21775-A0CF-4F6D-82A6-CDFB1817DB3A}"
@@ -18,6 +18,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{A07561
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Markers", "ShortBus.Markers\ShortBus.Markers.csproj", "{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.StructureMap", "ShortBus.StructureMap\ShortBus.StructureMap.csproj", "{8250FBB2-1372-4F46-916A-00F094B04F37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Autofac", "ShortBus.Autofac\ShortBus.Autofac.csproj", "{0A3CE491-085A-460C-BEE8-D577DFB0244D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Windsor", "ShortBus.Windsor\ShortBus.Windsor.csproj", "{126A6105-8F0E-4489-A75B-69958A00D570}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{8B88A450-D492-4839-A18D-C100AB63618D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Ninject", "ShortBus.Ninject\ShortBus.Ninject.csproj", "{26835F98-3898-4467-9999-2FC2DFC50370}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Unity", "ShortBus.Unity\ShortBus.Unity.csproj", "{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,8 +49,35 @@ Global
 		{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8250FBB2-1372-4F46-916A-00F094B04F37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8250FBB2-1372-4F46-916A-00F094B04F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8250FBB2-1372-4F46-916A-00F094B04F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8250FBB2-1372-4F46-916A-00F094B04F37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A3CE491-085A-460C-BEE8-D577DFB0244D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3CE491-085A-460C-BEE8-D577DFB0244D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A3CE491-085A-460C-BEE8-D577DFB0244D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3CE491-085A-460C-BEE8-D577DFB0244D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126A6105-8F0E-4489-A75B-69958A00D570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126A6105-8F0E-4489-A75B-69958A00D570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126A6105-8F0E-4489-A75B-69958A00D570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126A6105-8F0E-4489-A75B-69958A00D570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26835F98-3898-4467-9999-2FC2DFC50370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26835F98-3898-4467-9999-2FC2DFC50370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26835F98-3898-4467-9999-2FC2DFC50370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26835F98-3898-4467-9999-2FC2DFC50370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0A3CE491-085A-460C-BEE8-D577DFB0244D} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{126A6105-8F0E-4489-A75B-69958A00D570} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{8250FBB2-1372-4F46-916A-00F094B04F37} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{26835F98-3898-4467-9999-2FC2DFC50370} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975} = {8B88A450-D492-4839-A18D-C100AB63618D}
 	EndGlobalSection
 EndGlobal

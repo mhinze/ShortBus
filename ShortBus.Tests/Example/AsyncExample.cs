@@ -1,4 +1,6 @@
-﻿namespace ShortBus.Tests.Example
+﻿using StructureMap;
+
+namespace ShortBus.Tests.Example
 {
     using System;
     using System.Threading;
@@ -19,6 +21,8 @@
                 s.WithDefaultConventions();
                 s.AddAllTypesOf(( typeof (IAsyncQueryHandler<,>) ));
             }));
+
+            ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
 
             var query = new ExternalResourceQuery();
 

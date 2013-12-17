@@ -7,17 +7,18 @@
     <licenseUrl>https://github.com/mhinze/ShortBus/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/mhinze/ShortBus</projectUrl>
     <iconUrl>https://github.com/mhinze/ShortBus/raw/master/sb.jpg</iconUrl>
-    <id>ShortBus</id>
-    <title>ShortBus</title>
+    <id>ShortBus.Autofac</id>
+    <title>ShortBus.Autofac</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>ShortBus is an in-process mediator with low-friction API</description>
     <summary>ShortBus is an in-process mediator with low-friction API</summary>
     <copyright>Copyright Matt Hinze 2013</copyright>
     <dependencies>
         <dependency id="ShortBus.Markers" version="2.2.39" />
+		<dependency id="ShortBus" version="2.2.39" />
     </dependencies>
   </metadata>
     <files>
-        <file src="ShortBus\bin\Release\ShortBus.dll" target="lib"/>
+        <file src="ShortBus.Autofac\bin\Release\ShortBus.Autofac.dll" target="lib"/>
     </files>
 </package>

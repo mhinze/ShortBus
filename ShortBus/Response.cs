@@ -1,19 +1,18 @@
-using System;
-
 namespace ShortBus
 {
-    public class Response
+    using System;
+
+    public sealed class Response : Response<UnitType> { }
+
+    public class Response<TResponseData>
     {
+        public virtual TResponseData Data { get; set; }
+
         public virtual Exception Exception { get; set; }
 
         public virtual bool HasException()
         {
             return Exception != null;
         }
-    }
-
-    public class Response<TResponseData> : Response
-    {
-        public virtual TResponseData Data { get; set; }
     }
 }

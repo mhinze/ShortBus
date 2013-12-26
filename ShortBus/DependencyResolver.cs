@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace ShortBus
 {
+    using System;
+
     public interface IDependencyResolver
     {
         object GetInstance(Type type);
-        IEnumerable<T> GetInstances<T>();
     }
 
     public static class DependencyResolver
@@ -19,30 +16,23 @@ namespace ShortBus
             Current = resolver;
         }
 
-        public static void SetResolver(Func<Type, object> getInstance, Func<Type, IEnumerable<object>> getInstances)
+        public static void SetResolver(Func<Type, object> getInstance)
         {
-            Current = new DelegateDependencyResolver(getInstance, getInstances);
+            Current = new DelegateDependencyResolver(getInstance);
         }
 
-        private class DelegateDependencyResolver : IDependencyResolver
+        class DelegateDependencyResolver : IDependencyResolver
         {
-            private readonly Func<Type, object> _getInstance;
-            private readonly Func<Type, IEnumerable<object>> _getInstances;
+            readonly Func<Type, object> _getInstance;
 
-            public DelegateDependencyResolver(Func<Type, object> getInstance, Func<Type, IEnumerable<object>> getInstances)
+            public DelegateDependencyResolver(Func<Type, object> getInstance)
             {
                 _getInstance = getInstance;
-                _getInstances = getInstances;
             }
 
             public object GetInstance(Type type)
             {
                 return _getInstance(type);
-            }
-
-            public IEnumerable<T> GetInstances<T>()
-            {
-                return _getInstances(typeof (T)).OfType<T>();
             }
         }
     }

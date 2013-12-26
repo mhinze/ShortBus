@@ -1,4 +1,6 @@
 namespace ShortBus
 {
-    public interface IAsyncCommand {}
+    public interface IAsyncCommand : IAsyncCommand<UnitType> { }
+
+    public interface IAsyncCommand<TResult> { }
 }

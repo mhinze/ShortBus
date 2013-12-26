@@ -1,12 +1,20 @@
-﻿using System;
-
-namespace ShortBus.Tests.Example
+﻿namespace ShortBus.Tests.Example
 {
-    public class ConsoleWriter : ICommandHandler<PrintText>
+    using System;
+
+    public class ConsoleWriter : CommandHandler<PrintText>
     {
-        public void Handle(PrintText message)
+        protected override void HandleCore(PrintText command)
         {
-            Console.WriteLine(message.Format, message.Args);
+            Console.WriteLine(command.Format, command.Args);
+        }
+    }
+
+    public class CommandWithResultHandler : ICommandHandler<CommandWithResult, string>
+    {
+        public string Handle(CommandWithResult command)
+        {
+            return "foo";
         }
     }
 }

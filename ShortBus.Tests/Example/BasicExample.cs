@@ -17,7 +17,7 @@ namespace ShortBus.Tests.Example
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
                     s.AddAllTypesOf((typeof (IQueryHandler<,>)));
-                    s.AddAllTypesOf(typeof (ICommandHandler<>));
+                    s.AddAllTypesOf(typeof (ICommandHandler<,>));
                 }));
 
             ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
@@ -76,9 +76,25 @@ namespace ShortBus.Tests.Example
         }
 
         [Test]
-        public void Send()
+        public void Send_void()
         {
             var command = new PrintText
+                {
+                    Format = "This is a {0} message",
+                    Args = new object[] {"text"}
+                };
+
+            var mediator = ObjectFactory.GetInstance<IMediator>();
+
+            var response = mediator.Send(command);
+
+            Assert.That(response.HasException(), Is.False, response.Exception == null ? string.Empty : response.Exception.ToString());
+        }
+
+        [Test]
+        public void Send_void_variant()
+        {
+            var command = new PrintTextSpecial
                 {
                     Format = "This is a {0} message",
                     Args = new object[] {"text"}
@@ -92,19 +108,15 @@ namespace ShortBus.Tests.Example
         }
 
         [Test]
-        public void Send_variant()
+        public void Send_result()
         {
-            var command = new PrintTextSpecial
-                {
-                    Format = "This is a {0} message",
-                    Args = new object[] {"text"}
-                };
+            var command = new CommandWithResult();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = new Mediator();
 
             var response = mediator.Send(command);
 
-            Assert.That(response.HasException(), Is.False);
+            Assert.That(response.Data, Is.EqualTo("foo"));
         }
 
         [Test, Explicit]

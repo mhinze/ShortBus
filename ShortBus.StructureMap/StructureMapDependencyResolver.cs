@@ -1,9 +1,7 @@
-using StructureMap;
-
 namespace ShortBus.StructureMap
 {
     using System;
-    using System.Collections.Generic;
+    using global::StructureMap;
 
     public class StructureMapDependencyResolver : IDependencyResolver
     {
@@ -17,11 +15,6 @@ namespace ShortBus.StructureMap
         public object GetInstance(Type type)
         {
             return _container.GetInstance(type);
-        }
-
-        public IEnumerable<T> GetInstances<T>()
-        {
-            return _container.GetAllInstances<T>();
         }
     }
 }

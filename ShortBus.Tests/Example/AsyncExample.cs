@@ -1,10 +1,9 @@
-﻿using StructureMap;
-
-namespace ShortBus.Tests.Example
+﻿namespace ShortBus.Tests.Example
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using global::StructureMap;
     using NUnit.Framework;
     using StructureMap;
 
@@ -16,36 +15,62 @@ namespace ShortBus.Tests.Example
         {
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
-                s.AssemblyContainingType<IMediator>();
                 s.TheCallingAssembly();
-                s.WithDefaultConventions();
                 s.AddAllTypesOf(( typeof (IAsyncQueryHandler<,>) ));
             }));
 
-            ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
+            DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
 
             var query = new ExternalResourceQuery();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = new Mediator();
 
             var task = mediator.RequestAsync(query);
 
             Assert.That(task.Result.Data, Is.EqualTo("success"));
             Assert.That(task.Result.HasException(), Is.False);
         }
+
+        [Test]
+        public void SendResult()
+        {
+            ObjectFactory.Initialize(i => i.Scan(s =>
+            {
+                s.TheCallingAssembly();
+                s.AddAllTypesOf(( typeof (IAsyncCommandHandler<,>) ));
+            }));
+
+            DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
+
+            var query = new AddResource();
+
+            var mediator = new Mediator();
+
+            var result = mediator.SendAsync(query).Result;
+
+            Assert.That(result.Data, Is.EqualTo(AddResourceHandler.Result));
+        }
     }
 
-    public class ExternalResourceQuery : IAsyncQuery<string> {}
+    public class ExternalResourceQuery : IAsyncQuery<string> { }
 
     public class ExternalResourceHandler : IAsyncQueryHandler<ExternalResourceQuery, string>
     {
         public Task<string> HandleAsync(ExternalResourceQuery request)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-                return "success";
-            });
+            return Task.FromResult("success");
+        }
+    }
+
+    public class AddResource : IAsyncCommand<Guid> { }
+
+    public class AddResourceHandler : IAsyncCommandHandler<AddResource, Guid>
+    {
+        public static Guid Result = new Guid("D5361D4E-26F2-4E16-932B-930243CBC830");
+
+        public Task<Guid> HandleAsync(AddResource message)
+        {
+            return Task.FromResult(Result);
         }
     }
 }

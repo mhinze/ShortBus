@@ -1,4 +1,6 @@
 namespace ShortBus
 {
-    public interface ICommand {}
+    public interface ICommand : ICommand<UnitType> { }
+
+    public interface ICommand<TResult> { }
 }

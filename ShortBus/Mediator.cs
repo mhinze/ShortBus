@@ -6,13 +6,20 @@ namespace ShortBus
 
     public class Mediator : IMediator
     {
+        private readonly IDependencyResolver _dependencyResolver;
+
+        public Mediator(IDependencyResolver dependencyResolver)
+        {
+            _dependencyResolver = dependencyResolver;
+        }
+
         public virtual Response<TResponseData> Request<TResponseData>(IQuery<TResponseData> query)
         {
             var response = new Response<TResponseData>();
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (IQueryHandler<,>), "Handle", query.GetType());
+                var plan = new MediatorPlan<TResponseData>(typeof(IQueryHandler<,>), "Handle", query.GetType(), _dependencyResolver);
 
                 response.Data = plan.Invoke(query);
             }
@@ -30,7 +37,7 @@ namespace ShortBus
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (IAsyncQueryHandler<,>), "HandleAsync", query.GetType());
+                var plan = new MediatorPlan<TResponseData>(typeof(IAsyncQueryHandler<,>), "HandleAsync", query.GetType(), _dependencyResolver);
 
                 response.Data = await plan.InvokeAsync(query);
             }
@@ -48,7 +55,7 @@ namespace ShortBus
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (ICommandHandler<,>), "Handle", command.GetType());
+                var plan = new MediatorPlan<TResponseData>(typeof(ICommandHandler<,>), "Handle", command.GetType(), _dependencyResolver);
 
                 response.Data = plan.Invoke(command);
             }
@@ -66,7 +73,7 @@ namespace ShortBus
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (IAsyncCommandHandler<,>), "HandleAsync", command.GetType());
+                var plan = new MediatorPlan<TResponseData>(typeof(IAsyncCommandHandler<,>), "HandleAsync", command.GetType(), _dependencyResolver);
 
                 response.Data = await plan.InvokeAsync(command);
             }
@@ -83,13 +90,13 @@ namespace ShortBus
             readonly MethodInfo HandleMethod;
             readonly Func<object> HandlerInstanceBuilder;
 
-            public MediatorPlan(Type handlerTypeTemplate, string handlerMethodName, Type messageType)
+            public MediatorPlan(Type handlerTypeTemplate, string handlerMethodName, Type messageType, IDependencyResolver dependencyResolver)
             {
-                var handlerType = handlerTypeTemplate.MakeGenericType(messageType, typeof (TResult));
+                var handlerType = handlerTypeTemplate.MakeGenericType(messageType, typeof(TResult));
 
                 HandleMethod = GetHandlerMethod(handlerType, handlerMethodName, messageType);
 
-                HandlerInstanceBuilder = () => DependencyResolver.Current.GetInstance(handlerType);
+                HandlerInstanceBuilder = () => dependencyResolver.GetInstance(handlerType);
             }
 
             MethodInfo GetHandlerMethod(Type handlerType, string handlerMethodName, Type messageType)
@@ -104,12 +111,12 @@ namespace ShortBus
 
             public TResult Invoke(object message)
             {
-                return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return (TResult)HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
 
             public async Task<TResult> InvokeAsync(object message)
             {
-                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return await (Task<TResult>)HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿namespace ShortBus.Tests.Example
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using global::StructureMap;
     using NUnit.Framework;
@@ -16,14 +15,14 @@
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
                 s.TheCallingAssembly();
-                s.AddAllTypesOf(( typeof (IAsyncQueryHandler<,>) ));
+                s.AddAllTypesOf((typeof(IAsyncQueryHandler<,>)));
             }));
 
-            DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
+            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
 
             var query = new ExternalResourceQuery();
 
-            var mediator = new Mediator();
+            var mediator = new Mediator(resolver);
 
             var task = mediator.RequestAsync(query);
 
@@ -37,14 +36,14 @@
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
                 s.TheCallingAssembly();
-                s.AddAllTypesOf(( typeof (IAsyncCommandHandler<,>) ));
+                s.AddAllTypesOf((typeof(IAsyncCommandHandler<,>)));
             }));
 
-            DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
+            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
 
             var query = new AddResource();
 
-            var mediator = new Mediator();
+            var mediator = new Mediator(resolver);
 
             var result = mediator.SendAsync(query).Result;
 

@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Containers\ContainerTests.cs" />
     <Compile Include="Example\AsyncExample.cs" />
+    <Compile Include="Example\AutofacBasicExample.cs" />
     <Compile Include="Example\BasicExample.cs" />
     <Compile Include="Example\ConsoleWriter.cs" />
     <Compile Include="Example\MultiPong.cs" />

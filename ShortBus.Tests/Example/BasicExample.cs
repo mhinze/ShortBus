@@ -11,14 +11,19 @@ namespace ShortBus.Tests.Example
     {
         public BasicExample()
         {
-            ObjectFactory.Initialize(i => i.Scan(s =>
+            ObjectFactory.Initialize(i =>
+            {
+                i.Scan(s =>
                 {
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof (IQueryHandler<,>)));
-                    s.AddAllTypesOf(typeof (ICommandHandler<,>));
-                }));
+                    s.AddAllTypesOf((typeof(IQueryHandler<,>)));
+                    s.AddAllTypesOf(typeof(ICommandHandler<,>));
+                });
+
+                i.For<IDependencyResolver>().Use(() => DependencyResolver.Current);
+            });
 
             ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
         }
@@ -79,10 +84,10 @@ namespace ShortBus.Tests.Example
         public void Send_void()
         {
             var command = new PrintText
-                {
-                    Format = "This is a {0} message",
-                    Args = new object[] {"text"}
-                };
+            {
+                Format = "This is a {0} message",
+                Args = new object[] { "text" }
+            };
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
@@ -95,10 +100,10 @@ namespace ShortBus.Tests.Example
         public void Send_void_variant()
         {
             var command = new PrintTextSpecial
-                {
-                    Format = "This is a {0} message",
-                    Args = new object[] {"text"}
-                };
+            {
+                Format = "This is a {0} message",
+                Args = new object[] { "text" }
+            };
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
@@ -112,7 +117,7 @@ namespace ShortBus.Tests.Example
         {
             var command = new CommandWithResult();
 
-            var mediator = new Mediator();
+            var mediator = new Mediator(DependencyResolver.Current);
 
             var response = mediator.Send(command);
 

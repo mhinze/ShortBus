@@ -10,10 +10,11 @@ namespace ShortBus
     public abstract class AsyncCommandHandler<TCommand> : IAsyncCommandHandler<TCommand, UnitType>
         where TCommand : IAsyncCommand
     {
-        public Task<UnitType> HandleAsync(TCommand message)
+        public async Task<UnitType> HandleAsync(TCommand message)
         {
-            return HandleAsyncCore(message)
-                .ContinueWith(_ => UnitType.Default);
+            await HandleAsyncCore(message);
+
+            return UnitType.Default;
         }
 
         protected abstract Task HandleAsyncCore(TCommand message);

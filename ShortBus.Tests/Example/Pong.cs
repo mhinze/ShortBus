@@ -1,6 +1,6 @@
 ﻿namespace ShortBus.Tests.Example
 {
-    public class Pong : IQueryHandler<Ping, string>
+    public class Pong : IRequestHandler<Ping, string>
     {
         public string Handle(Ping request)
         {

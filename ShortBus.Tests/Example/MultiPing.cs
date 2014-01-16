@@ -1,7 +1,7 @@
 ﻿namespace ShortBus.Tests.Example
 {
-    public class DoublePing : IQuery<string> {}
+    public class DoublePing : IRequest<string> {}
     public class DoublePingALing : DoublePing {}
-    public class TriplePing : IQuery<string> {}
+    public class TriplePing : IRequest<string> {}
     public class TriplePingALing : TriplePing {}
 }

@@ -1,6 +1,6 @@
 namespace ShortBus.Tests.Example
 {
-    public class PrintText : ICommand
+    public class PrintText : IRequest<UnitType>
     {
         public virtual string Format { get; set; }
         public virtual object[] Args { get; set; }
@@ -17,7 +17,7 @@ namespace ShortBus.Tests.Example
         }
     }
 
-    public class CommandWithResult : ICommand<string>
+    public class CommandWithResult : IRequest<string>
     {
         
     }

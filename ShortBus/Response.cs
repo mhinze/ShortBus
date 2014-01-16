@@ -2,7 +2,14 @@ namespace ShortBus
 {
     using System;
 
-    public sealed class Response : Response<UnitType> { }
+    public sealed class Response : Response<UnitType>
+    {
+        public override UnitType Data
+        {
+            get { return UnitType.Default; }
+            set { }
+        }
+    }
 
     public class Response<TResponseData>
     {

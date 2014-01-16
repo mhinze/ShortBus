@@ -1,6 +1,7 @@
 ﻿namespace ShortBus.Tests.Example
 {
-    using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using global::StructureMap;
     using NUnit.Framework;
@@ -10,12 +11,38 @@
     public class AsyncExample
     {
         [Test]
+        public void Notification()
+        {
+            var handled = new List<int>();
+
+            ObjectFactory.Initialize(i =>
+            {
+                i.Scan(s =>
+                {
+                    s.TheCallingAssembly();
+                    s.AddAllTypesOf(( typeof (INotificationHandler<>) ));
+                });
+                i.For<IList>().Use(handled);
+            });
+
+            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
+
+            var notification = new Notification();
+
+            var mediator = new Mediator(resolver);
+
+            mediator.Notify(notification);
+
+            CollectionAssert.AreEquivalent(handled, new[]{1,2});
+        }
+
+        [Test]
         public void RequestResponse()
         {
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
                 s.TheCallingAssembly();
-                s.AddAllTypesOf((typeof(IAsyncQueryHandler<,>)));
+                s.AddAllTypesOf(( typeof (IAsyncRequestHandler<,>) ));
             }));
 
             var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
@@ -29,31 +56,11 @@
             Assert.That(task.Result.Data, Is.EqualTo("success"));
             Assert.That(task.Result.HasException(), Is.False);
         }
-
-        [Test]
-        public void SendResult()
-        {
-            ObjectFactory.Initialize(i => i.Scan(s =>
-            {
-                s.TheCallingAssembly();
-                s.AddAllTypesOf((typeof(IAsyncCommandHandler<,>)));
-            }));
-
-            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
-
-            var query = new AddResource();
-
-            var mediator = new Mediator(resolver);
-
-            var result = mediator.SendAsync(query).Result;
-
-            Assert.That(result.Data, Is.EqualTo(AddResourceHandler.Result));
-        }
     }
 
-    public class ExternalResourceQuery : IAsyncQuery<string> { }
+    public class ExternalResourceQuery : IAsyncRequest<string> { }
 
-    public class ExternalResourceHandler : IAsyncQueryHandler<ExternalResourceQuery, string>
+    public class ExternalResourceHandler : IAsyncRequestHandler<ExternalResourceQuery, string>
     {
         public Task<string> HandleAsync(ExternalResourceQuery request)
         {
@@ -61,15 +68,35 @@
         }
     }
 
-    public class AddResource : IAsyncCommand<Guid> { }
+    public class Notification { }
 
-    public class AddResourceHandler : IAsyncCommandHandler<AddResource, Guid>
+    public class NotificationHandler1 : INotificationHandler<Notification>
     {
-        public static Guid Result = new Guid("D5361D4E-26F2-4E16-932B-930243CBC830");
+        readonly IList _list;
 
-        public Task<Guid> HandleAsync(AddResource message)
+        public NotificationHandler1(IList list)
         {
-            return Task.FromResult(Result);
+            _list = list;
+        }
+
+        public void Handle(Notification notification)
+        {
+            _list.Add(1);
+        }
+    }
+
+    public class NotificationHandler2 : INotificationHandler<Notification>
+    {
+        readonly IList _list;
+
+        public NotificationHandler2(IList list)
+        {
+            _list = list;
+        }
+
+        public void Handle(Notification notification)
+        {
+            _list.Add(2);
         }
     }
 }

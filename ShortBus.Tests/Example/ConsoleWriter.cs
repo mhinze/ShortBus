@@ -2,15 +2,17 @@
 {
     using System;
 
-    public class ConsoleWriter : CommandHandler<PrintText>
+    public class ConsoleWriter : IRequestHandler<PrintText, UnitType>
     {
-        protected override void HandleCore(PrintText command)
+        public UnitType Handle(PrintText request)
         {
-            Console.WriteLine(command.Format, command.Args);
+            Console.WriteLine(request.Format, request.Args);
+
+            return UnitType.Default;
         }
     }
 
-    public class CommandWithResultHandler : ICommandHandler<CommandWithResult, string>
+    public class CommandWithResultHandler : IRequestHandler<CommandWithResult, string>
     {
         public string Handle(CommandWithResult command)
         {

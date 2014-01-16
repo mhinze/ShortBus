@@ -1,6 +1,7 @@
 ﻿namespace ShortBus.Windsor
 {
     using System;
+    using System.Collections.Generic;
     using Castle.Windsor;
 
     public class WindsorDependencyResolver : IDependencyResolver
@@ -15,6 +16,11 @@
         public object GetInstance(Type type)
         {
             return _container.Resolve(type);
+        }
+
+        public IEnumerable<T> GetInstances<T>()
+        {
+            return _container.ResolveAll<T>();
         }
     }
 }

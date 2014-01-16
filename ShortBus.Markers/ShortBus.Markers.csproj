@@ -43,10 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAsyncCommand.cs" />
-    <Compile Include="IAsyncQuery.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="IQuery.cs" />
+    <Compile Include="IAsyncRequest.cs" />
+    <Compile Include="IRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>

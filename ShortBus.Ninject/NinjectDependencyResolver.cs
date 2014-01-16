@@ -1,6 +1,7 @@
 ﻿namespace ShortBus.Ninject
 {
     using System;
+    using System.Collections.Generic;
     using global::Ninject;
 
     public class NinjectDependencyResolver : IDependencyResolver
@@ -15,6 +16,11 @@
         public object GetInstance(Type type)
         {
             return _container.Get(type);
+        }
+
+        public IEnumerable<T> GetInstances<T>()
+        {
+            return _container.GetAll<T>();
         }
     }
 }

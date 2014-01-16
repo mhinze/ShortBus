@@ -23,13 +23,9 @@ namespace ShortBus.Tests.Example
             builder.RegisterSource(new ContravariantRegistrationSource());
 
             builder.RegisterAssemblyTypes(typeof (IMediator).Assembly, GetType().Assembly)
-                .AsClosedTypesOf(typeof (IQueryHandler<,>))
+                .AsClosedTypesOf(typeof (IRequestHandler<,>))
                 .AsImplementedInterfaces();
-
-            builder.RegisterAssemblyTypes(typeof (IMediator).Assembly, GetType().Assembly)
-                .AsClosedTypesOf(typeof (ICommandHandler<,>))
-                .AsImplementedInterfaces();
-
+            
             builder.RegisterType<Mediator>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
             // to allow ShortBus to resolve lifetime-scoped dependencies properly, 
@@ -136,7 +132,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.HasException(), Is.False,
                 response.Exception == null ? string.Empty : response.Exception.ToString());
@@ -153,7 +149,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.HasException(), Is.False,
                 response.Exception == null ? string.Empty : response.Exception.ToString());
@@ -166,7 +162,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.Data, Is.EqualTo("foo"),
                 response.Exception == null ? string.Empty : response.Exception.ToString());

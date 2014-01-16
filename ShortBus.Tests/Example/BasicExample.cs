@@ -18,8 +18,8 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof(IQueryHandler<,>)));
-                    s.AddAllTypesOf(typeof(ICommandHandler<,>));
+                    s.AddAllTypesOf((typeof(IRequestHandler<,>)));
+                    s.AddAllTypesOf(typeof(INotificationHandler<>));
                 });
 
                 i.For<IDependencyResolver>().Use(() => DependencyResolver.Current);
@@ -91,7 +91,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.HasException(), Is.False, response.Exception == null ? string.Empty : response.Exception.ToString());
         }
@@ -107,7 +107,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.HasException(), Is.False);
         }
@@ -119,7 +119,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = new Mediator(DependencyResolver.Current);
 
-            var response = mediator.Send(command);
+            var response = mediator.Request(command);
 
             Assert.That(response.Data, Is.EqualTo("foo"));
         }

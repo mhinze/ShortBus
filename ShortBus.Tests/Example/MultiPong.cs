@@ -1,8 +1,8 @@
 ﻿namespace ShortBus.Tests.Example
 {
     public class MultiPong 
-    : IQueryHandler<DoublePing, string>,
-      IQueryHandler<TriplePing, string>
+    : IRequestHandler<DoublePing, string>,
+      IRequestHandler<TriplePing, string>
     {
         public string Handle(DoublePing request)
         {

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus", "ShortBus\ShortBus.csproj", "{50078B66-DBAC-4273-8DD0-970176B2FE2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Tests", "ShortBus.Tests\ShortBus.Tests.csproj", "{9EA21775-A0CF-4F6D-82A6-CDFB1817DB3A}"
@@ -30,6 +32,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Ninject", "ShortBus.Ninject\ShortBus.Ninject.csproj", "{26835F98-3898-4467-9999-2FC2DFC50370}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Unity", "ShortBus.Unity\ShortBus.Unity.csproj", "{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{52E74E88-C37B-4DA6-940B-D0E22AAA7FD3}"
+	ProjectSection(SolutionItems) = preProject
+		ShortBus.Autofac.nuspec = ShortBus.Autofac.nuspec
+		ShortBus.Markers.nuspec = ShortBus.Markers.nuspec
+		ShortBus.Ninject.nuspec = ShortBus.Ninject.nuspec
+		ShortBus.nuspec = ShortBus.nuspec
+		ShortBus.StructureMap.nuspec = ShortBus.StructureMap.nuspec
+		ShortBus.Unity.nuspec = ShortBus.Unity.nuspec
+		ShortBus.Windsor.nuspec = ShortBus.Windsor.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>ShortBus is an in-process mediator with low-friction API</description>
     <summary>ShortBus is an in-process mediator with low-friction API</summary>
-    <copyright>Copyright Matt Hinze 2013</copyright>
+    <copyright>Copyright Matt Hinze 2014</copyright>
   </metadata>
     <files>
         <file src="ShortBus.Markers\bin\Release\ShortBus.Markers.dll" target="lib"/>

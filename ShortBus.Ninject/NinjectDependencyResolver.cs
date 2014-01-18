@@ -6,7 +6,7 @@
 
     public class NinjectDependencyResolver : IDependencyResolver
     {
-        readonly IKernel _container;
+        private readonly IKernel _container;
 
         public NinjectDependencyResolver(IKernel container)
         {

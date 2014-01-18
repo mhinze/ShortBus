@@ -24,12 +24,13 @@ namespace ShortBus
             Current = new DelegateDependencyResolver(getInstance, getInstances);
         }
 
-        class DelegateDependencyResolver : IDependencyResolver
+        private class DelegateDependencyResolver : IDependencyResolver
         {
-            readonly Func<Type, object> _getInstance;
-            readonly Func<Type, IEnumerable<object>> _getInstances;
+            private readonly Func<Type, object> _getInstance;
+            private readonly Func<Type, IEnumerable<object>> _getInstances;
 
-            public DelegateDependencyResolver(Func<Type, object> getInstance, Func<Type, IEnumerable<object>> getInstances)
+            public DelegateDependencyResolver(Func<Type, object> getInstance,
+                Func<Type, IEnumerable<object>> getInstances)
             {
                 _getInstance = getInstance;
                 _getInstances = getInstances;

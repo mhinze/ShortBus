@@ -23,9 +23,9 @@
             var builder = new ContainerBuilder();
             var registerSingle = new RegisterSingle();
             var multipleRegistrations = new[] {new RegisterMultiple(), new RegisterMultiple()};
-            RegistrationExtensions.RegisterInstance(builder, registerSingle);
-            RegistrationExtensions.RegisterInstance(builder, multipleRegistrations[0]);
-            RegistrationExtensions.RegisterInstance(builder, multipleRegistrations[1]);
+            builder.RegisterInstance(registerSingle);
+            builder.RegisterInstance(multipleRegistrations[0]);
+            builder.RegisterInstance(multipleRegistrations[1]);
 
             var resolver = new AutofacDependencyResolver(builder.Build());
 

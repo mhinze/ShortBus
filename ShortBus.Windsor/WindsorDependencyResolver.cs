@@ -6,7 +6,7 @@
 
     public class WindsorDependencyResolver : IDependencyResolver
     {
-        readonly IWindsorContainer _container;
+        private readonly IWindsorContainer _container;
 
         public WindsorDependencyResolver(IWindsorContainer container)
         {

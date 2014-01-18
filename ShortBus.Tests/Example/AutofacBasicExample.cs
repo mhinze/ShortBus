@@ -1,13 +1,13 @@
-using System;
-using System.Diagnostics;
-using System.Linq;
-using Autofac;
-using Autofac.Features.Variance;
-using NUnit.Framework;
-using ShortBus.Autofac;
-
 namespace ShortBus.Tests.Example
 {
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using global::Autofac;
+    using global::Autofac.Features.Variance;
+    using NUnit.Framework;
+    using ShortBus.Autofac;
+
     [TestFixture]
     public class AutofacBasicExample
     {
@@ -25,7 +25,7 @@ namespace ShortBus.Tests.Example
             builder.RegisterAssemblyTypes(typeof (IMediator).Assembly, GetType().Assembly)
                 .AsClosedTypesOf(typeof (IRequestHandler<,>))
                 .AsImplementedInterfaces();
-            
+
             builder.RegisterType<Mediator>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
             // to allow ShortBus to resolve lifetime-scoped dependencies properly, 

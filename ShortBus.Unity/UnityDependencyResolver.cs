@@ -6,7 +6,7 @@
 
     public class UnityDependencyResolver : IDependencyResolver
     {
-        readonly IUnityContainer _container;
+        private readonly IUnityContainer _container;
 
         public UnityDependencyResolver(IUnityContainer container)
         {

@@ -6,7 +6,7 @@ namespace ShortBus.StructureMap
 
     public class StructureMapDependencyResolver : IDependencyResolver
     {
-        readonly IContainer _container;
+        private readonly IContainer _container;
 
         public StructureMapDependencyResolver(IContainer container)
         {

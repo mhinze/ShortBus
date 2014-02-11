@@ -2,13 +2,14 @@
 ShortBus is an in-process mediator with low-friction API
 
 ### Command
+
     public class DoSomething : ICommand { }
 
-	public class DoesSomething : ICommandHandler<DoSomething> {
-		public void Handle(DoSomething command) {
-		   // does something
-		}
-	}
+    public class DoesSomething : ICommandHandler<DoSomething> {
+        public void Handle(DoSomething command) {
+           // does something
+        }
+    }
 
     _mediator.Send(new DoSomething());
 
@@ -17,14 +18,14 @@ ShortBus is an in-process mediator with low-friction API
 ### Query
     public class AskAQuestion : IQuery<Answer> { }
 
-	public class Answerer : IQueryHandler<AskAQuestion, Answer> {
-	    public Answer Handle(AskAQuestion query) {			
-			return answer;
-		}
-	}
+    public class Answerer : IQueryHandler<AskAQuestion, Answer> {
+        public Answer Handle(AskAQuestion query) {			
+            return answer;
+        }
+    }
 
-	var answer = _mediator.Request(new AskAQuestion());
-	
+    var answer = _mediator.Request(new AskAQuestion());
+    
 ### StructureMap
 ShortBus depends on StructureMap and it requires that you register 
 handlers:

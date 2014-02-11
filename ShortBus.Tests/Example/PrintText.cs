@@ -17,8 +17,5 @@ namespace ShortBus.Tests.Example
         }
     }
 
-    public class CommandWithResult : IRequest<string>
-    {
-        
-    }
+    public class CommandWithResult : IRequest<string> {}
 }

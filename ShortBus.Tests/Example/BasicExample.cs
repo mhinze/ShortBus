@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using NUnit.Framework;
-using ShortBus.StructureMap;
-using StructureMap;
-
-namespace ShortBus.Tests.Example
+﻿namespace ShortBus.Tests.Example
 {
+    using System;
+    using System.Diagnostics;
+    using global::StructureMap;
+    using NUnit.Framework;
+    using ShortBus.StructureMap;
+
     [TestFixture]
     public class BasicExample
     {
@@ -18,8 +18,8 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof(IRequestHandler<,>)));
-                    s.AddAllTypesOf(typeof(INotificationHandler<>));
+                    s.AddAllTypesOf((typeof (IRequestHandler<,>)));
+                    s.AddAllTypesOf(typeof (INotificationHandler<>));
                 });
 
                 i.For<IDependencyResolver>().Use(() => DependencyResolver.Current);
@@ -86,14 +86,15 @@ namespace ShortBus.Tests.Example
             var command = new PrintText
             {
                 Format = "This is a {0} message",
-                Args = new object[] { "text" }
+                Args = new object[] {"text"}
             };
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
             var response = mediator.Request(command);
 
-            Assert.That(response.HasException(), Is.False, response.Exception == null ? string.Empty : response.Exception.ToString());
+            Assert.That(response.HasException(), Is.False,
+                response.Exception == null ? string.Empty : response.Exception.ToString());
         }
 
         [Test]
@@ -102,7 +103,7 @@ namespace ShortBus.Tests.Example
             var command = new PrintTextSpecial
             {
                 Format = "This is a {0} message",
-                Args = new object[] { "text" }
+                Args = new object[] {"text"}
             };
 
             var mediator = ObjectFactory.GetInstance<IMediator>();

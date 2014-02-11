@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using global::StructureMap;
     using NUnit.Framework;
-    using StructureMap;
+    using ShortBus.StructureMap;
 
     [TestFixture]
     public class AsyncExample
@@ -20,7 +20,7 @@
                 i.Scan(s =>
                 {
                     s.TheCallingAssembly();
-                    s.AddAllTypesOf(( typeof (INotificationHandler<>) ));
+                    s.AddAllTypesOf((typeof (INotificationHandler<>)));
                 });
                 i.For<IList>().Use(handled);
             });
@@ -33,7 +33,7 @@
 
             mediator.Notify(notification);
 
-            CollectionAssert.AreEquivalent(handled, new[]{1,2});
+            CollectionAssert.AreEquivalent(handled, new[] {1, 2});
         }
 
         [Test]
@@ -42,7 +42,7 @@
             ObjectFactory.Initialize(i => i.Scan(s =>
             {
                 s.TheCallingAssembly();
-                s.AddAllTypesOf(( typeof (IAsyncRequestHandler<,>) ));
+                s.AddAllTypesOf((typeof (IAsyncRequestHandler<,>)));
             }));
 
             var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
@@ -58,7 +58,7 @@
         }
     }
 
-    public class ExternalResourceQuery : IAsyncRequest<string> { }
+    public class ExternalResourceQuery : IAsyncRequest<string> {}
 
     public class ExternalResourceHandler : IAsyncRequestHandler<ExternalResourceQuery, string>
     {
@@ -68,11 +68,11 @@
         }
     }
 
-    public class Notification { }
+    public class Notification {}
 
     public class NotificationHandler1 : INotificationHandler<Notification>
     {
-        readonly IList _list;
+        private readonly IList _list;
 
         public NotificationHandler1(IList list)
         {
@@ -87,7 +87,7 @@
 
     public class NotificationHandler2 : INotificationHandler<Notification>
     {
-        readonly IList _list;
+        private readonly IList _list;
 
         public NotificationHandler2(IList list)
         {

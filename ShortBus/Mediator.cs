@@ -17,7 +17,7 @@ namespace ShortBus
 
     public class Mediator : IMediator
     {
-        readonly IDependencyResolver _dependencyResolver;
+        private readonly IDependencyResolver _dependencyResolver;
 
         public Mediator(IDependencyResolver dependencyResolver)
         {
@@ -30,7 +30,8 @@ namespace ShortBus
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (IRequestHandler<,>), "Handle", request.GetType(), _dependencyResolver);
+                var plan = new MediatorPlan<TResponseData>(typeof (IRequestHandler<,>), "Handle", request.GetType(),
+                    _dependencyResolver);
 
                 response.Data = plan.Invoke(request);
             }
@@ -48,7 +49,8 @@ namespace ShortBus
 
             try
             {
-                var plan = new MediatorPlan<TResponseData>(typeof (IAsyncRequestHandler<,>), "HandleAsync", query.GetType(), _dependencyResolver);
+                var plan = new MediatorPlan<TResponseData>(typeof (IAsyncRequestHandler<,>), "HandleAsync",
+                    query.GetType(), _dependencyResolver);
 
                 response.Data = await plan.InvokeAsync(query);
             }
@@ -74,7 +76,7 @@ namespace ShortBus
                 }
                 catch (Exception e)
                 {
-                    ( exceptions ?? ( exceptions = new List<Exception>() ) ).Add(e);
+                    (exceptions ?? (exceptions = new List<Exception>())).Add(e);
                 }
             if (exceptions != null)
                 response.Exception = new AggregateException(exceptions);
@@ -101,7 +103,8 @@ namespace ShortBus
                 });
         }
 
-        static async Task<Exception> notifyAsync<TNotification>(IAsyncNotificationHandler<TNotification> asyncCommandHandler, TNotification message)
+        private static async Task<Exception> notifyAsync<TNotification>(
+            IAsyncNotificationHandler<TNotification> asyncCommandHandler, TNotification message)
         {
             try
             {
@@ -115,12 +118,13 @@ namespace ShortBus
             return null;
         }
 
-        class MediatorPlan<TResult>
+        private class MediatorPlan<TResult>
         {
-            readonly MethodInfo HandleMethod;
-            readonly Func<object> HandlerInstanceBuilder;
+            private readonly MethodInfo HandleMethod;
+            private readonly Func<object> HandlerInstanceBuilder;
 
-            public MediatorPlan(Type handlerTypeTemplate, string handlerMethodName, Type messageType, IDependencyResolver dependencyResolver)
+            public MediatorPlan(Type handlerTypeTemplate, string handlerMethodName, Type messageType,
+                IDependencyResolver dependencyResolver)
             {
                 var handlerType = handlerTypeTemplate.MakeGenericType(messageType, typeof (TResult));
 
@@ -129,24 +133,24 @@ namespace ShortBus
                 HandlerInstanceBuilder = () => dependencyResolver.GetInstance(handlerType);
             }
 
-            MethodInfo GetHandlerMethod(Type handlerType, string handlerMethodName, Type messageType)
+            private MethodInfo GetHandlerMethod(Type handlerType, string handlerMethodName, Type messageType)
             {
                 return handlerType
                     .GetMethod(handlerMethodName,
                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod,
                         null, CallingConventions.HasThis,
-                        new[] { messageType },
+                        new[] {messageType},
                         null);
             }
 
             public TResult Invoke(object message)
             {
-                return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] {message});
             }
 
             public async Task<TResult> InvokeAsync(object message)
             {
-                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] {message});
             }
         }
     }

@@ -6,7 +6,7 @@ namespace ShortBus.Autofac
 
     public class AutofacDependencyResolver : IDependencyResolver
     {
-        readonly ILifetimeScope _container;
+        private readonly ILifetimeScope _container;
 
         public AutofacDependencyResolver(ILifetimeScope container)
         {

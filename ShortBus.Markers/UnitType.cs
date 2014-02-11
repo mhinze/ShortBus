@@ -4,6 +4,6 @@ namespace ShortBus
     {
         public static readonly UnitType Default = new UnitType();
 
-        UnitType() { }
+        private UnitType() {}
     }
 }

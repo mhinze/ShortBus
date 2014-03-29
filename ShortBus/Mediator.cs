@@ -92,9 +92,9 @@ namespace ShortBus
                 return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
 
-            public async Task<TResult> InvokeAsync(object message)
+            public Task<TResult> InvokeAsync(object message)
             {
-                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
         }
     }

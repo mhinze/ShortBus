@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30219.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus", "ShortBus\ShortBus.csproj", "{50078B66-DBAC-4273-8DD0-970176B2FE2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Tests", "ShortBus.Tests\ShortBus.Tests.csproj", "{9EA21775-A0CF-4F6D-82A6-CDFB1817DB3A}"
@@ -30,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Ninject", "ShortBus.Ninject\ShortBus.Ninject.csproj", "{26835F98-3898-4467-9999-2FC2DFC50370}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Unity", "ShortBus.Unity\ShortBus.Unity.csproj", "{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Mef", "ShortBus.Mef\ShortBus.Mef.csproj", "{449E2CF2-9DDF-4973-9E16-80FDF979FC40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,10 @@ Global
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{449E2CF2-9DDF-4973-9E16-80FDF979FC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449E2CF2-9DDF-4973-9E16-80FDF979FC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449E2CF2-9DDF-4973-9E16-80FDF979FC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449E2CF2-9DDF-4973-9E16-80FDF979FC40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +87,6 @@ Global
 		{8250FBB2-1372-4F46-916A-00F094B04F37} = {8B88A450-D492-4839-A18D-C100AB63618D}
 		{26835F98-3898-4467-9999-2FC2DFC50370} = {8B88A450-D492-4839-A18D-C100AB63618D}
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{449E2CF2-9DDF-4973-9E16-80FDF979FC40} = {8B88A450-D492-4839-A18D-C100AB63618D}
 	EndGlobalSection
 EndGlobal

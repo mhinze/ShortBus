@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace ShortBus.Mef
 {
     using System;
@@ -16,7 +18,19 @@ namespace ShortBus.Mef
 
         public object GetInstance(Type type)
         {
-            return _container.GetExport<object>(AttributedModelServices.GetContractName(type));
+            return GetInstance(type, null);
+        }
+
+        object GetInstance(Type serviceType, string key)
+        {
+            var contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
+            var exports = _container.GetExportedValues<object>(contract);
+
+            var enumerable = exports as object[] ?? exports.ToArray();
+            if (enumerable.Any())
+                return enumerable.First();
+
+            throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
         }
 
         public IEnumerable<T> GetInstances<T>()

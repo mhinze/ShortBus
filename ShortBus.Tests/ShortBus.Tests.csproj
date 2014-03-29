@@ -68,6 +68,7 @@
       <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -96,6 +97,10 @@
     <ProjectReference Include="..\ShortBus.Markers\ShortBus.Markers.csproj">
       <Project>{9ABBD382-F93A-49A9-B3C7-8D8AEB5E458D}</Project>
       <Name>ShortBus.Markers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShortBus.Mef\ShortBus.Mef.csproj">
+      <Project>{449E2CF2-9DDF-4973-9E16-80FDF979FC40}</Project>
+      <Name>ShortBus.Mef</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShortBus.Ninject\ShortBus.Ninject.csproj">
       <Project>{26835F98-3898-4467-9999-2FC2DFC50370}</Project>

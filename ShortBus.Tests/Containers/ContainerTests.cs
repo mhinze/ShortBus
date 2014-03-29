@@ -7,9 +7,12 @@
     using global::Ninject;
     using global::StructureMap;
     using Microsoft.Practices.Unity;
+    using Mef;
     using Ninject;
     using NUnit.Framework;
     using StructureMap;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
     using Unity;
     using Windsor;
 
@@ -30,6 +33,20 @@
             var resolver = new AutofacDependencyResolver(builder.Build());
 
             var resolved = (Registered) resolver.GetInstance(typeof (Registered));
+
+            Assert.That(resolved, Is.EqualTo(registered));
+        }
+
+        [Test]
+        public void MefResolveSingleInstance()
+        {
+            var container = new CompositionContainer();
+            var registered = new Registered();
+            container.ComposeExportedValue(registered);
+
+            var resolver = new MefDependencyResolver(container);
+
+            var resolved = (Registered)resolver.GetInstance(typeof(Registered));
 
             Assert.That(resolved, Is.EqualTo(registered));
         }

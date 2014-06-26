@@ -64,6 +64,12 @@
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit.2.5.9.10348\lib\pnunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\packages\SimpleInjector.2.5.0\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Diagnostics">
+      <HintPath>..\packages\SimpleInjector.2.5.0\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -100,6 +106,10 @@
     <ProjectReference Include="..\ShortBus.Ninject\ShortBus.Ninject.csproj">
       <Project>{26835F98-3898-4467-9999-2FC2DFC50370}</Project>
       <Name>ShortBus.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ShortBus.SimpleInjector\ShortBus.SimpleInjector.csproj">
+      <Project>{7D808989-F544-475E-B120-1600A384DFA3}</Project>
+      <Name>ShortBus.SimpleInjector</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShortBus.StructureMap\ShortBus.StructureMap.csproj">
       <Project>{8250FBB2-1372-4F46-916A-00F094B04F37}</Project>

@@ -1,4 +1,5 @@
-﻿namespace ShortBus.Tests.Containers
+﻿
+namespace ShortBus.Tests.Containers
 {
     using Autofac;
     using Castle.MicroKernel.Registration;
@@ -12,6 +13,7 @@
     using StructureMap;
     using Unity;
     using Windsor;
+	using SimpleInjector;
 
     [TestFixture]
     public class ContainerTests
@@ -89,5 +91,19 @@
 
             Assert.That(resolved, Is.EqualTo(registered));
         }
+
+	    [Test]
+	    public void SimpleInjectorResolveSingleInstance()
+	    {
+		    var container = new global::SimpleInjector.Container();
+		    var registered = new Registered();
+			container.RegisterSingle(typeof(Registered), registered);
+
+		    var resolver = new SimpleInjectorDependencyResolver(container);
+		    
+			var resolved = resolver.GetInstance(typeof (Registered));
+
+			Assert.That(resolved, Is.EqualTo(registered));
+	    }
     }
 }

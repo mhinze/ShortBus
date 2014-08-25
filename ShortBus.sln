@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Ninject", "ShortBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.Unity", "ShortBus.Unity\ShortBus.Unity.csproj", "{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortBus.SimpleInjector", "ShortBus.SimpleInjector\ShortBus.SimpleInjector.csproj", "{7D808989-F544-475E-B120-1600A384DFA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D808989-F544-475E-B120-1600A384DFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D808989-F544-475E-B120-1600A384DFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D808989-F544-475E-B120-1600A384DFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D808989-F544-475E-B120-1600A384DFA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{8250FBB2-1372-4F46-916A-00F094B04F37} = {8B88A450-D492-4839-A18D-C100AB63618D}
 		{26835F98-3898-4467-9999-2FC2DFC50370} = {8B88A450-D492-4839-A18D-C100AB63618D}
 		{E86D92BC-A5E4-4704-99DB-BBFA42A3C975} = {8B88A450-D492-4839-A18D-C100AB63618D}
+		{7D808989-F544-475E-B120-1600A384DFA3} = {8B88A450-D492-4839-A18D-C100AB63618D}
 	EndGlobalSection
 EndGlobal

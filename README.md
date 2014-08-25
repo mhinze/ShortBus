@@ -25,9 +25,18 @@ ShortBus is an in-process mediator with low-friction API
 
 	var answer = _mediator.Request(new AskAQuestion());
 	
-### StructureMap
-ShortBus depends on StructureMap and it requires that you register 
-handlers:
+### IOC Containers
+
+ShortBus currently supports 6 IOC containers
+
+* AutoFac
+* Ninject
+* Simple Injector
+* Structure Map
+* Unity
+* Windsor
+
+Example configuration of registering handlers using StructureMap:
 
     ObjectFactory.Initialize(i => i.Scan(s =>
     {

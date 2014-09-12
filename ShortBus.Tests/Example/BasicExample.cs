@@ -3,29 +3,33 @@ using System.Diagnostics;
 using NUnit.Framework;
 using ShortBus.StructureMap;
 using StructureMap;
+using System.Reflection;
 
 namespace ShortBus.Tests.Example
 {
     [TestFixture]
     public class BasicExample
     {
+        private readonly IContainer _container;
         public BasicExample()
         {
-            ObjectFactory.Initialize(i =>
+            _container = new Container();
+
+            _container.Configure(i =>
             {
                 i.Scan(s =>
                 {
                     s.AssemblyContainingType<IMediator>();
-                    s.TheCallingAssembly();
+                    s.Assembly(Assembly.GetExecutingAssembly());
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof(IRequestHandler<,>)));
-                    s.AddAllTypesOf(typeof(INotificationHandler<>));
+                    s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+                    s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
                 });
 
                 i.For<IDependencyResolver>().Use(() => DependencyResolver.Current);
             });
 
-            ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(ObjectFactory.Container));
+            ShortBus.DependencyResolver.SetResolver(new StructureMapDependencyResolver(_container));
         }
 
         [Test]
@@ -33,7 +37,7 @@ namespace ShortBus.Tests.Example
         {
             var query = new Ping();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var pong = mediator.Request(query);
 
@@ -46,7 +50,7 @@ namespace ShortBus.Tests.Example
         {
             var query = new TriplePing();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var pong = mediator.Request(query);
 
@@ -59,7 +63,7 @@ namespace ShortBus.Tests.Example
         {
             var query = new PingALing();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var pong = mediator.Request(query);
 
@@ -72,7 +76,7 @@ namespace ShortBus.Tests.Example
         {
             var query = new DoublePingALing();
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var pong = mediator.Request(query);
 
@@ -89,7 +93,7 @@ namespace ShortBus.Tests.Example
                 Args = new object[] { "text" }
             };
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var response = mediator.Request(command);
 
@@ -105,7 +109,7 @@ namespace ShortBus.Tests.Example
                 Args = new object[] { "text" }
             };
 
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
 
             var response = mediator.Request(command);
 
@@ -127,7 +131,7 @@ namespace ShortBus.Tests.Example
         [Test, Explicit]
         public void Perf()
         {
-            var mediator = ObjectFactory.GetInstance<IMediator>();
+            var mediator = _container.GetInstance<IMediator>();
             var query = new Ping();
 
             var watch = Stopwatch.StartNew();

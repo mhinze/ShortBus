@@ -53,11 +53,12 @@ namespace ShortBus.Tests.Containers
         [Test]
         public void StructureMapResolveSingleInstance()
         {
+            var container = new Container();
+
             var registered = new Registered();
+            container.Inject(registered);
 
-            ObjectFactory.Initialize(i => i.Register(registered));
-
-            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
+            var resolver = new StructureMapDependencyResolver(container);
 
             var resolved = (Registered) resolver.GetInstance(typeof (Registered));
 

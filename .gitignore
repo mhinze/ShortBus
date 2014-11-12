@@ -14,4 +14,8 @@ packages/
 msbuild.log
 _Resharper*/
 _AzurePackage/
+
+# NCrunch
+*.ncrunch*
+.*crunch*.local.xml
 *.ncrunchsolution

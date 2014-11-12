@@ -50,7 +50,7 @@ namespace ShortBus
             {
                 var plan = new MediatorPlan<TResponseData>(typeof (IAsyncRequestHandler<,>), "HandleAsync", query.GetType(), _dependencyResolver);
 
-                response.Data = await plan.InvokeAsync(query);
+                response.Data = await plan.InvokeAsync(query).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -81,11 +81,11 @@ namespace ShortBus
             return response;
         }
 
-        public async Task<Response> NotifyAsync<TNotification>(TNotification notification)
+        public Task<Response> NotifyAsync<TNotification>(TNotification notification)
         {
             var handlers = _dependencyResolver.GetInstances<IAsyncNotificationHandler<TNotification>>();
 
-            return await Task
+            return Task
                 .WhenAll(handlers.Select(x => notifyAsync(x, notification)))
                 .ContinueWith(task =>
                 {
@@ -105,7 +105,7 @@ namespace ShortBus
         {
             try
             {
-                await asyncCommandHandler.HandleAsync(message);
+                await asyncCommandHandler.HandleAsync(message).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -144,9 +144,9 @@ namespace ShortBus
                 return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
 
-            public async Task<TResult> InvokeAsync(object message)
+            public Task<TResult> InvokeAsync(object message)
             {
-                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
         }
     }

@@ -46,6 +46,7 @@
     <Compile Include="Mediator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="ResponseExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

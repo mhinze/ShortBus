@@ -8,11 +8,11 @@ namespace ShortBus
 
     public interface IMediator
     {
-        Response<TResponseData> Request<TResponseData>(IRequest<TResponseData> request);
-        Task<Response<TResponseData>> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query);
+        TResponseData Request<TResponseData>(IRequest<TResponseData> request);
+        Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query);
 
-        Response Notify<TNotification>(TNotification notification);
-        Task<Response> NotifyAsync<TNotification>(TNotification notification);
+        void Notify<TNotification>(TNotification notification);
+        Task NotifyAsync<TNotification>(TNotification notification);
     }
 
     public class Mediator : IMediator
@@ -24,47 +24,22 @@ namespace ShortBus
             _dependencyResolver = dependencyResolver;
         }
 
-        public virtual Response<TResponseData> Request<TResponseData>(IRequest<TResponseData> request)
+        public virtual TResponseData Request<TResponseData>(IRequest<TResponseData> request)
         {
-            var response = new Response<TResponseData>();
-
-            try
-            {
-                var plan = new MediatorPlan<TResponseData>(typeof (IRequestHandler<,>), "Handle", request.GetType(), _dependencyResolver);
-
-                response.Data = plan.Invoke(request);
-            }
-            catch (Exception e)
-            {
-                response.Exception = e;
-            }
-
-            return response;
+            var plan = new MediatorPlan<TResponseData>(typeof (IRequestHandler<,>), "Handle", request.GetType(), _dependencyResolver);
+            return plan.Invoke(request);
         }
 
-        public async Task<Response<TResponseData>> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query)
+        public Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query)
         {
-            var response = new Response<TResponseData>();
-
-            try
-            {
-                var plan = new MediatorPlan<TResponseData>(typeof (IAsyncRequestHandler<,>), "HandleAsync", query.GetType(), _dependencyResolver);
-
-                response.Data = await plan.InvokeAsync(query);
-            }
-            catch (Exception e)
-            {
-                response.Exception = e;
-            }
-
-            return response;
+            var plan = new MediatorPlan<TResponseData>(typeof (IAsyncRequestHandler<,>), "HandleAsync", query.GetType(), _dependencyResolver);
+            return plan.InvokeAsync(query);
         }
 
-        public Response Notify<TNotification>(TNotification notification)
+        public void Notify<TNotification>(TNotification notification)
         {
             var handlers = _dependencyResolver.GetInstances<INotificationHandler<TNotification>>();
 
-            var response = new Response();
             List<Exception> exceptions = null;
 
             foreach (var handler in handlers)
@@ -76,43 +51,16 @@ namespace ShortBus
                 {
                     ( exceptions ?? ( exceptions = new List<Exception>() ) ).Add(e);
                 }
+
             if (exceptions != null)
-                response.Exception = new AggregateException(exceptions);
-            return response;
+                throw new AggregateException(exceptions);
         }
 
-        public async Task<Response> NotifyAsync<TNotification>(TNotification notification)
+        public Task NotifyAsync<TNotification>(TNotification notification)
         {
             var handlers = _dependencyResolver.GetInstances<IAsyncNotificationHandler<TNotification>>();
 
-            return await Task
-                .WhenAll(handlers.Select(x => notifyAsync(x, notification)))
-                .ContinueWith(task =>
-                {
-                    var exceptions = task.Result.Where(exception => exception != null).ToArray();
-                    var response = new Response();
-
-                    if (exceptions.Any())
-                    {
-                        response.Exception = new AggregateException(exceptions);
-                    }
-
-                    return response;
-                });
-        }
-
-        static async Task<Exception> notifyAsync<TNotification>(IAsyncNotificationHandler<TNotification> asyncCommandHandler, TNotification message)
-        {
-            try
-            {
-                await asyncCommandHandler.HandleAsync(message);
-            }
-            catch (Exception e)
-            {
-                return e;
-            }
-
-            return null;
+            return Task.WhenAll(handlers.Select(x => x.HandleAsync(notification)));
         }
 
         class MediatorPlan<TResult>
@@ -144,9 +92,9 @@ namespace ShortBus
                 return (TResult) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
 
-            public async Task<TResult> InvokeAsync(object message)
+            public Task<TResult> InvokeAsync(object message)
             {
-                return await (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
+                return (Task<TResult>) HandleMethod.Invoke(HandlerInstanceBuilder(), new[] { message });
             }
         }
     }

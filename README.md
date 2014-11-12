@@ -1,30 +1,29 @@
 ## ShortBus
 ShortBus is an in-process mediator with low-friction API
 
-### Command
-    public class DoSomething : ICommand { }
+### Requests
+    public class DoSomething : IRequest<UnitType> { }
 
-	public class DoesSomething : ICommandHandler<DoSomething> {
-		public void Handle(DoSomething command) {
+	public class DoesSomething : IRequestHandler<DoSomething, UnitType> {
+		public UnitType Handle(DoSomething request) {
 		   // does something
+		   return UnitType.Default; // Similar to void
 		}
 	}
 
     _mediator.Send(new DoSomething());
 
+### Notifications
+    public class NotifySomething { }
 
+    public class NotificationHandler : INotificationHandler<NotifySomething> {
+        public void Handle(NotifySomething notification) {
+            // does something
+        }
+    }
 
-### Query
-    public class AskAQuestion : IQuery<Answer> { }
+    _mediator.Notify(new NotifySomething());
 
-	public class Answerer : IQueryHandler<AskAQuestion, Answer> {
-	    public Answer Handle(AskAQuestion query) {			
-			return answer;
-		}
-	}
-
-	var answer = _mediator.Request(new AskAQuestion());
-	
 ### IOC Containers
 
 ShortBus currently supports 6 IOC containers
@@ -38,14 +37,15 @@ ShortBus currently supports 6 IOC containers
 
 Example configuration of registering handlers using StructureMap:
 
-    ObjectFactory.Initialize(i => i.Scan(s =>
+    var container = new Container();
+    container.Configure(i => i.Scan(s =>
     {
         s.AssemblyContainingType<IMediator>();
-        s.TheCallingAssembly();
+        s.Assembly(Assembly.GetExecutingAssembly());
         s.WithDefaultConventions();
-        s.AddAllTypesOf(typeof (IQueryHandler<,>));
-        s.AddAllTypesOf(typeof (ICommandHandler<>));
-    }));	
+        s.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
+        s.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
+    }));
 
 ### Low-friction API
 No type parameter noise.

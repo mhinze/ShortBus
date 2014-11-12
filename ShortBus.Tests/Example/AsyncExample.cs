@@ -6,6 +6,7 @@
     using global::StructureMap;
     using NUnit.Framework;
     using StructureMap;
+    using System.Reflection;
 
     [TestFixture]
     public class AsyncExample
@@ -14,18 +15,18 @@
         public void Notification()
         {
             var handled = new List<int>();
-
-            ObjectFactory.Initialize(i =>
+            var container = new Container();
+            container.Configure(i =>
             {
                 i.Scan(s =>
                 {
-                    s.TheCallingAssembly();
+                    s.Assembly(Assembly.GetExecutingAssembly());
                     s.AddAllTypesOf(( typeof (INotificationHandler<>) ));
                 });
                 i.For<IList>().Use(handled);
             });
 
-            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
+            var resolver = new StructureMapDependencyResolver(container);
 
             var notification = new Notification();
 
@@ -33,19 +34,20 @@
 
             mediator.Notify(notification);
 
-            CollectionAssert.AreEquivalent(handled, new[]{1,2});
+            CollectionAssert.AreEquivalent(new[] { 1, 2 }, handled);
         }
 
         [Test]
         public void RequestResponse()
         {
-            ObjectFactory.Initialize(i => i.Scan(s =>
+            var container = new Container();
+            container.Configure(i => i.Scan(s =>
             {
-                s.TheCallingAssembly();
+                s.Assembly(Assembly.GetExecutingAssembly());
                 s.AddAllTypesOf(( typeof (IAsyncRequestHandler<,>) ));
             }));
 
-            var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
+            var resolver = new StructureMapDependencyResolver(container);
 
             var query = new ExternalResourceQuery();
 

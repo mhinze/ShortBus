@@ -14,13 +14,18 @@ namespace ShortBus.Tests.Containers
     using Unity;
     using Windsor;
 	using SimpleInjector;
+    using System.Linq;
 
     [TestFixture]
     public class ContainerTests
     {
         public ContainerTests() { }
 
-        class Registered { }
+        interface IRegistered { }
+
+        class Registered : IRegistered { }
+
+        class Registered2 : IRegistered { }
 
         [Test]
         public void AutofacResolveSingleInstance()
@@ -76,6 +81,20 @@ namespace ShortBus.Tests.Containers
             var resolved = (Registered) resolver.GetInstance(typeof (Registered));
 
             Assert.That(resolved, Is.EqualTo(registered));
+        }
+
+        [Test]
+        public void UnityResolveMultipleTypes()
+        {
+            var container = new UnityContainer();
+            container.RegisterType<IRegistered, Registered>();
+            container.RegisterType<IRegistered, Registered2>("secondType");
+
+            var resolver = new UnityDependencyResolver(container);
+
+            var resolved = resolver.GetInstances<IRegistered>();
+
+            Assert.That(resolved.Count(), Is.EqualTo(2));
         }
 
         [Test]

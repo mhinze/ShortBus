@@ -20,7 +20,18 @@
 
         public IEnumerable<T> GetInstances<T>()
         {
-            return _container.ResolveAll<T>();
+            List<T> results = new List<T>(_container.ResolveAll<T>());
+
+            try
+            {
+                results.Add(_container.Resolve<T>()); // needed to resolve unnamed instances.
+            }
+            catch(ResolutionFailedException)
+            {
+                // Unity throws an error if it can't resolve a type. In this case we don't care if it failed to resolve.
+            }
+
+            return results;
         }
     }
 }
